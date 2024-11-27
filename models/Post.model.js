@@ -1,0 +1,54 @@
+const mongoose = require("mongoose")
+const postSchema = new mongoose.Schema({
+    title:{
+        type:String,
+        required:true
+    },
+    briefDesc:{
+        type:String,
+        required:true,
+        maxlength:150
+    },
+    detailedDesc:{
+        type:String,
+        required:true,
+        maxlength:1000
+    },
+    images:[{
+        type:String
+    }],
+    barterType:{
+        type:String,
+        enum:['Goods','Services'],
+        required:true,
+    },
+    offering:{
+        type:String,
+        required:true,
+        maxlength:500
+    },
+    requirements:{
+        type:String,
+        required:true,
+        maxlength:500
+    },
+    isDonation:{
+        type:Boolean,
+        default:false
+    },
+    createdBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true
+    },
+    createdAt:{
+        type:Date,
+        default:Date.now
+    },
+    value:{
+        type:Number,
+        required:true,
+    }
+})
+const Post = mongoose.model('Post',postSchema)
+module.exports = Post
