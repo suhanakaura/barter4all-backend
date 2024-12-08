@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 const User = require('../models/User.model.js')
 const bcrypt = require('bcrypt')
 const gen_jwt = require('../utilities/generate-jwt.js')
@@ -81,4 +82,31 @@ const HandleLogout = (req,res) =>{
         res.status(400).send({message:"Interval server error"})
     }
 }
-module.exports = {HandleSignUp,HandleLogin,HandleLogout}
+
+const HandlePassForgot = async(req,res) =>{
+// get the user's posted email
+    const {
+        email
+    } = req.body;
+    const user = await User.findOne({email})
+    if(!user){
+        return res.status(400).send({message:"No user found with this email address"})
+    }
+// generate the random reset token
+    const createPassResetToken = () =>{
+        const resetToken = crypto.randomBytes(32).toString('hex')
+        const passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+        const passwordResetExpires = Date.now() + 10*60*1000
+        user.passwordResetToken = passwordResetToken
+        user.passwordResetExpires = passwordResetExpires
+        console.log(resetToken)
+        return resetToken
+    }
+    const token = createPassResetToken()
+    await user.save({validateBeforeSave:false})
+// send it to user's email
+}
+const HandleResetPassword = (req,res) =>{
+
+}
+module.exports = {HandleSignUp,HandleLogin,HandleLogout,HandlePassForgot,HandleResetPassword}
