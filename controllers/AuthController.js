@@ -109,7 +109,7 @@ const HandlePassForgot = async (req, res) => {
   const token = createPassResetToken();
   await user.save({ validateBeforeSave: false });
   // send it to user's email
-  const resetURL = `http://localhost:4006/api/v1/auth/resetPassword/${token}`;
+  const resetURL = `http://localhost:5173/resetPassword/${token}`;
 
   const message = `Forgot your password? Submit a PATCH request with your new password and confim password
    to : ${resetURL}.\n If you didn't forget your password, please ignore this email`;
