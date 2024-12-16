@@ -5,6 +5,6 @@ authRouter.post('/signup',HandleSignUp)
 authRouter.post('/login',HandleLogin)
 authRouter.post('/logout',HandleLogout)
 authRouter.post('/forgotPass',HandlePassForgot)
-authRouter.post('/resetPassword',HandleResetPassword)
+authRouter.patch('/resetPassword/:token',HandleResetPassword)
 module.exports={authRouter}
 
